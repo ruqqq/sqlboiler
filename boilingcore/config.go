@@ -20,38 +20,4 @@ type Config struct {
 	Wipe             bool
 
 	Imports importers.Collection
-
-	Postgres PostgresConfig
-	MySQL    MySQLConfig
-	MSSQL    MSSQLConfig
-}
-
-// PostgresConfig configures a postgres database
-type PostgresConfig struct {
-	User    string
-	Pass    string
-	Host    string
-	Port    int
-	DBName  string
-	SSLMode string
-}
-
-// MySQLConfig configures a mysql database
-type MySQLConfig struct {
-	User    string
-	Pass    string
-	Host    string
-	Port    int
-	DBName  string
-	SSLMode string
-}
-
-// MSSQLConfig configures a mysql database
-type MSSQLConfig struct {
-	User    string
-	Pass    string
-	Host    string
-	Port    int
-	DBName  string
-	SSLMode string
 }
