@@ -9,23 +9,27 @@ import (
 	"text/template"
 
 	"github.com/pkg/errors"
-	"github.com/vattle/sqlboiler/bdb"
-	"github.com/vattle/sqlboiler/queries"
+	"github.com/vattle/sqlboiler/drivers"
 	"github.com/vattle/sqlboiler/strmangle"
 )
 
 // templateData for sqlboiler templates
 type templateData struct {
-	Tables []bdb.Table
-	Table  bdb.Table
+	Tables []drivers.Table
+	Table  drivers.Table
 
 	// Controls what names are output
 	PkgName string
 	Schema  string
 
 	// Controls which code is output (mysql vs pqsl ...)
-	DriverName      string
-	UseLastInsertID bool
+	DriverName string
+	Dialect    drivers.Dialect
+
+	// LQ and RQ contain a quoted quote that allows us to write
+	// the templates easier.
+	LQ string
+	RQ string
 
 	// Turn off auto timestamps or hook generation
 	NoHooks          bool
@@ -36,11 +40,6 @@ type templateData struct {
 
 	// StringFuncs are usable in templates with stringMap
 	StringFuncs map[string]func(string) string
-
-	// Dialect controls quoting
-	Dialect queries.Dialect
-	LQ      string
-	RQ      string
 }
 
 func (t templateData) Quotes(s string) string {
@@ -225,11 +224,11 @@ var templateFunctions = template.FuncMap{
 	"txtsFromToMany":   txtsFromToMany,
 
 	// dbdrivers ops
-	"filterColumnsByAuto":    bdb.FilterColumnsByAuto,
-	"filterColumnsByDefault": bdb.FilterColumnsByDefault,
-	"filterColumnsByEnum":    bdb.FilterColumnsByEnum,
-	"sqlColDefinitions":      bdb.SQLColDefinitions,
-	"columnNames":            bdb.ColumnNames,
-	"columnDBTypes":          bdb.ColumnDBTypes,
-	"getTable":               bdb.GetTable,
+	"filterColumnsByAuto":    drivers.FilterColumnsByAuto,
+	"filterColumnsByDefault": drivers.FilterColumnsByDefault,
+	"filterColumnsByEnum":    drivers.FilterColumnsByEnum,
+	"sqlColDefinitions":      drivers.SQLColDefinitions,
+	"columnNames":            drivers.ColumnNames,
+	"columnDBTypes":          drivers.ColumnDBTypes,
+	"getTable":               drivers.GetTable,
 }
