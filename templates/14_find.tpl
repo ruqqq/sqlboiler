@@ -41,6 +41,12 @@ func Find{{$tableNameSingular}}(exec boil.Executor, {{$pkArgs}}, selectCols ...s
 		return nil, errors.Wrap(err, "{{.PkgName}}: unable to select from {{.Table.Name}}")
 	}
 
+	{{if not .NoHooks -}}
+    if err := {{$varNameSingular}}Obj.doAfterSelectHooks(queries.GetExecutor(q)); err != nil {
+        return {{$varNameSingular}}Obj, err
+    }
+    {{- end}}
+
 	return {{$varNameSingular}}Obj, nil
 }
 
